@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopSmart DB Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Demo visuale del progetto database</p>
+      <h1>ShopSmart Admin Dashboard</h1>
+      <p class="subtitle">
+        Una piccola interfaccia web per mostrare utenti, prodotti e ordini del progetto e-commerce.
+      </p>
+    </div>
+    <div class="hero-card">
+      <h2>Obiettivo</h2>
+      <p>
+        Far vedere in modo chiaro come le tabelle del database lavorano insieme.
+      </p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="users">Utenti</button>
+      <button class="nav-btn" data-view="products">Prodotti</button>
+      <button class="nav-btn" data-view="orders">Ordini</button>
+      <button class="nav-btn" data-view="joins">JOIN spiegate</button>
+    </aside>
+
+    <section class="content">
+      <section id="dashboard" class="view active"></section>
+      <section id="users" class="view"></section>
+      <section id="products" class="view"></section>
+      <section id="orders" class="view"></section>
+      <section id="joins" class="view"></section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Frontend demo statico pronto per GitHub Pages o apertura locale.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
