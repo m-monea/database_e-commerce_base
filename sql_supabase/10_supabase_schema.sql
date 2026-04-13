@@ -1,5 +1,4 @@
 -- ShopSmart schema per Supabase / PostgreSQL
-
 create table if not exists public.users (
   id bigint generated always as identity primary key,
   full_name varchar(120) not null,
@@ -42,6 +41,7 @@ create table if not exists public.order_items (
   unique (order_id, product_id)
 );
 
+
 create index if not exists idx_products_category_id on public.products(category_id);
 create index if not exists idx_orders_user_id on public.orders(user_id);
 create index if not exists idx_orders_user_status_date on public.orders(user_id, status, order_date desc);
@@ -55,6 +55,7 @@ values
   ('Giulia Verdi', 'giulia.verdi@email.com', 'Torino', '2026-02-03'),
   ('Luca Neri', 'luca.neri@email.com', 'Napoli', '2026-02-18')
 on conflict (email) do nothing;
+
 
 insert into public.categories (name)
 values ('Accessori'), ('Monitor'), ('Computer')
