@@ -1,142 +1,94 @@
-# Progetto Database - E-commerce Base
-Un progetto SQL pensato per mostrare progettazione.
+# Progetto Database E-Commerce
 
-## Obiettivo
-Realizzare un database relazionale per un e-commerce base con:
-- più tabelle collegate tra loro
-- vincoli di integrità
-- query con `JOIN`
-- query ottimizzate
-- indici per migliorare le prestazioni
+## Descrizione
 
-## Stack
-- **Database target:** PostgreSQL 15+
-- **Linguaggio:** SQL
+Questo progetto rappresenta un sistema di gestione e-commerce completo, attraverso la creazione di un database relazionale e l'integrazione con un'interfaccia web.
 
-> Le query usano sintassi PostgreSQL moderna, ma la struttura è facilmente adattabile ad altri RDBMS.
+Il sistema gestisce:
+utenti
+prodotti
+categorie
+ordini
+dettagli degli ordini
 
----
+Include sia la parte backend (database SQL) che una interfaccia frontend dinamica pubblicata su GitHub Pages.
 
-## Struttura del progetto
 
-```text
-progetto-database-serio/
-├── README.md
-├── docs/
-│   └── schema.md
-└── sql/
-    ├── 01_schema.sql
-    ├── 02_seed.sql
-    ├── 03_queries.sql
-    └── 04_indexes_and_optimization.sql
-```
+## Obiettivi del progetto
 
----
+* Progettare un database relazionale strutturato
+* Utilizzare relazioni tramite chiavi esterne (Foreign Key)
+* Scrivere query SQL complesse con JOIN
+* Ottimizzare le performance con indici
+* Integrare il database con una UI web
+* Mostrare dati reali tramite API
 
-## Modello dati
+## Struttura del Database
 
-Le entità principali sono:
+### Tabelle principali:
 
-- **users**: utenti registrati
-- **categories**: categorie prodotto
-- **products**: catalogo prodotti
-- **orders**: ordini effettuati dagli utenti
-- **order_items**: righe d'ordine con quantità e prezzo storico
+`users`
+`products`
+`categories`
+`orders`
+`order_items`
 
-### Relazioni
-- Un utente può avere molti ordini → `users 1:N orders`
-- Una categoria può contenere molti prodotti → `categories 1:N products`
-- Un ordine può avere molte righe → `orders 1:N order_items`
-- Un prodotto può comparire in molte righe ordine → `products 1:N order_items`
+### Relazioni:
 
----
+Un utente può avere più ordini
+Un ordine contiene più prodotti (tramite `order_items`)
+Ogni prodotto appartiene a una categoria
 
-## Come eseguirlo
+## Tecnologie utilizzate
 
-### 1. Crea un database PostgreSQL
-```sql
-CREATE DATABASE ecommerce_db;
-```
+### Database
 
-### 2. Esegui gli script in ordine
-```bash
-psql -U postgres -d ecommerce_db -f sql/01_schema.sql
-psql -U postgres -d ecommerce_db -f sql/02_seed.sql
-psql -U postgres -d ecommerce_db -f sql/03_queries.sql
-psql -U postgres -d ecommerce_db -f sql/04_indexes_and_optimization.sql
-```
+PostgreSQL (Supabase)
 
----
+### Frontend
 
-## Scelte progettuali
+HTML
+CSS
+JavaScript (Vanilla)
 
-### 1. `order_items.unit_price`
-Il prezzo viene salvato anche nella tabella delle righe ordine perchè può cambiare nel tempo, ma un ordine deve mantenere il valore storico del momento dell'acquisto.
+### Hosting
 
-### 2. `CHECK` constraints
-Sono presenti vincoli per evitare dati assurdi, ad esempio:
-- prezzo negativo
-- quantità <= 0
-- stock negativo
+GitHub Pages (frontend)
+Supabase (database + API)
 
-### 3. `UNIQUE` su email e SKU
-- `users.email` è univoca
-- `products.sku` è univoco
+## Architettura
 
-Questo evita duplicati logici.
+Frontend (GitHub Pages)
+JavaScript (fetch dati)
+Supabase API
+Database PostgreSQL
 
-### 4. Normalizzazione
-Il progetto è strutturato in modo da evitare ridondanze inutili:
-- dati utente separati dagli ordini
-- dati prodotto separati dalle righe ordine
-- categorie centralizzate
+## Funzionalità principali
 
----
+Visualizzazione utenti
+Visualizzazione prodotti
+Lista ordini
+Dashboard con dati aggregati
+Query JOIN tramite viste SQL (`order_summary`)
 
-## Query incluse
-Nel file `sql/03_queries.sql` trovi esempi realistici di:
 
-- elenco ordini con nome utente
-- dettaglio righe ordine con nome prodotto
-- totale speso per utente
-- top prodotti più venduti
-- fatturato per categoria
-- utenti che non hanno mai ordinato
-- query con filtro su data e stato ordine
+## Ottimizzazione
 
----
+Indici su chiavi esterne
+Indice composito su:
 
-## Bonus: ottimizzazione
-Nel file `sql/04_indexes_and_optimization.sql` trovi:
+  ```
+  orders(user_id, status, order_date DESC)
+  ```
+Uso di viste per semplificare query complesse
+Esempi di `EXPLAIN ANALYZE`
 
-- indici su foreign key
-- indici su colonne usate spesso nei filtri
-- indice composito sugli ordini
----
+## Sicurezza
 
-## Esempi di query utili
+Row Level Security (RLS) attiva su Supabase
+Accesso in sola lettura tramite `anon key`
+Nessuna esposizione di credenziali sensibili
 
-### Ordini con utente
-```sql
-SELECT o.order_id,
-       u.first_name,
-       u.last_name,
-       o.order_date,
-       o.status,
-       o.total_amount
-FROM orders o
-JOIN users u ON u.user_id = o.user_id
-ORDER BY o.order_date DESC;
-```
+## Demo
 
-### Prodotti venduti per categoria
-```sql
-SELECT c.name AS category,
-       p.name AS product,
-       SUM(oi.quantity) AS total_units_sold
-FROM order_items oi
-JOIN products p   ON p.product_id = oi.product_id
-JOIN categories c ON c.category_id = p.category_id
-GROUP BY c.name, p.name
-ORDER BY total_units_sold DESC;
-```
+(https://m-monea.github.io/database_e-commerce_base/)
