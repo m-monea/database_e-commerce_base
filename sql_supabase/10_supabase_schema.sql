@@ -1,4 +1,13 @@
 -- ShopSmart schema per Supabase / PostgreSQL
+{
+  "servers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=wtmyzsbcyfndetdxppfa&read_only=true"
+    }
+  }
+}
+
 create table if not exists public.users (
   id bigint generated always as identity primary key,
   full_name varchar(120) not null,
